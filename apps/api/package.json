@@ -1,0 +1,28 @@
+{
+  "name": "@lanradar/api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\""
+  },
+  "dependencies": {
+    "@nestjs/common": "^11",
+    "@nestjs/core": "^11",
+    "@nestjs/platform-express": "^11",
+    "@nestjs/typeorm": "^11",
+    "typeorm": "^0.3",
+    "pg": "^8",
+    "reflect-metadata": "^0.2",
+    "rxjs": "^7",
+    "@lanradar/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11",
+    "@types/node": "^22",
+    "typescript": "^5.7",
+    "eslint": "^9"
+  }
+}
