@@ -14,6 +14,11 @@ import {
 import type { LanEvent } from "../data/events";
 import Countdown from "../../components/Countdown";
 import EventMap from "../../components/EventMap";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { DataCard } from "@/components/thegridcn/data-card";
+import { GlowContainer } from "@/components/thegridcn/glow-container";
+import { HUDCornerFrame } from "@/components/thegridcn/hud-corner-frame";
 
 type View = "grid" | "list" | "map";
 
@@ -54,7 +59,7 @@ export default function EventsClient({
     <div>
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-4 mb-8">
-        <div className="flex bg-panel border border-border/50 rounded-lg overflow-hidden glow-border">
+        <div className="flex bg-card border border-border rounded-lg overflow-hidden glow-border">
           {([
             ["grid", Grid3X3],
             ["list", List],
@@ -63,14 +68,14 @@ export default function EventsClient({
             <button
               key={v}
               onClick={() => setView(v as View)}
-              className={`px-4 py-2 flex items-center gap-2 text-sm font-medium transition-colors ${
+              className={`px-4 py-2 flex items-center gap-2 text-sm font-mono uppercase tracking-wider transition-colors ${
                 view === v
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               <Icon className="w-4 h-4" />
-              {v.charAt(0).toUpperCase() + v.slice(1)}
+              {v}
             </button>
           ))}
         </div>
@@ -80,7 +85,7 @@ export default function EventsClient({
           <select
             value={countryFilter}
             onChange={(e) => setCountryFilter(e.target.value)}
-            className="bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
+            className="bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground font-mono"
           >
             <option value="All">All Countries</option>
             {countries.map((c) => (
@@ -90,7 +95,7 @@ export default function EventsClient({
           <select
             value={sizeFilter}
             onChange={(e) => setSizeFilter(e.target.value)}
-            className="bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
+            className="bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground font-mono"
           >
             <option value="All">All Sizes</option>
             <option value="small">Small (&lt;1000)</option>
@@ -100,7 +105,7 @@ export default function EventsClient({
         </div>
       </div>
 
-      <p className="text-muted-foreground text-sm mb-6">
+      <p className="text-muted-foreground text-sm mb-6 font-mono uppercase tracking-wider">
         Showing {filtered.length} event{filtered.length !== 1 ? "s" : ""}
       </p>
 
@@ -120,7 +125,7 @@ export default function EventsClient({
         <div className="space-y-8">
           {Object.entries(grouped).map(([month, evts]) => (
             <div key={month}>
-              <h3 className="font-display text-lg font-bold text-primary mb-4 border-b border-border/50 pb-2">
+              <h3 className="font-display text-lg font-bold text-primary mb-4 border-b border-border/50 pb-2 uppercase tracking-wider">
                 {month}
               </h3>
               <div className="space-y-3">
@@ -130,18 +135,18 @@ export default function EventsClient({
                     href={event.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 rounded-xl bg-panel border border-border/50 hover:border-primary/50 transition-all group glow-border"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/50 transition-all group glow-border"
                   >
                     <div className="text-2xl">{event.flag}</div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-display font-semibold group-hover:text-primary transition-colors">
+                      <h4 className="font-display font-semibold group-hover:text-primary transition-colors uppercase tracking-wide">
                         {event.name}
                       </h4>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-muted-foreground font-mono">
                         {event.date} · {event.location}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground font-mono">
                       <Users className="w-4 h-4" />
                       {event.attendance}
                     </div>
@@ -156,17 +161,23 @@ export default function EventsClient({
 
       {/* Map View */}
       {view === "map" && (
-        <EventMap
-          events={filtered.map((e) => ({
-            name: e.name,
-            lat: e.lat,
-            lng: e.lng,
-            date: e.date,
-            flag: e.flag,
-            attendance: e.attendance,
-            url: e.url,
-          }))}
-        />
+        <GlowContainer hover={false} intensity="lg" className="p-0 overflow-hidden relative">
+          <HUDCornerFrame position="top-left" />
+          <HUDCornerFrame position="top-right" />
+          <HUDCornerFrame position="bottom-left" />
+          <HUDCornerFrame position="bottom-right" />
+          <EventMap
+            events={filtered.map((e) => ({
+              name: e.name,
+              lat: e.lat,
+              lng: e.lng,
+              date: e.date,
+              flag: e.flag,
+              attendance: e.attendance,
+              url: e.url,
+            }))}
+          />
+        </GlowContainer>
       )}
     </div>
   );
@@ -178,40 +189,30 @@ function EventCard({ event }: { event: LanEvent }) {
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-6 rounded-xl bg-panel border border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group block glow-border"
+      className="block"
     >
-      <div className="flex items-start justify-between mb-3">
-        <h3 className="font-display font-semibold text-lg group-hover:text-primary transition-colors">
-          {event.flag} {event.name}
-        </h3>
-        <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />
-      </div>
-      <div className="space-y-2 text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-primary/70" />
-          {event.date}
-        </div>
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-primary/70" />
-          {event.location}
-        </div>
-        <div className="flex items-center gap-2">
-          <Users className="w-4 h-4 text-primary/70" />
-          {event.attendance} expected
-        </div>
-      </div>
-      <div className="mt-3 flex items-center justify-between">
-        <span
-          className={`text-xs px-2 py-1 rounded-full ${
+      <DataCard
+        title={`${event.flag} ${event.name}`}
+        fields={[
+          { label: "Date", value: event.date },
+          { label: "Location", value: event.location },
+          { label: "Attendance", value: `${event.attendance} expected` },
+        ]}
+        className="h-full hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5"
+      />
+      <div className="mt-2 flex items-center justify-between">
+        <Badge
+          variant={
             event.size === "large"
-              ? "bg-primary/20 text-primary"
+              ? "default"
               : event.size === "medium"
-              ? "bg-accent/20 text-accent"
-              : "bg-muted text-muted-foreground"
-          }`}
+              ? "secondary"
+              : "outline"
+          }
+          className="text-[10px] uppercase"
         >
           {event.size}
-        </span>
+        </Badge>
       </div>
       {new Date(event.startDate) > new Date() && (
         <Countdown targetDate={event.startDate} compact label="Starts in:" />

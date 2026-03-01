@@ -1,6 +1,8 @@
 import { events, countries } from "../data/events";
 import EventsClient from "../components/EventsClient";
 import NavBar from "../components/NavBar";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,16 +17,23 @@ export default function EventsPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+          <UplinkHeader leftText="// EVENTS DATABASE" rightText={`${events.length} SIGNALS DETECTED`} className="mb-8" />
+
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
             🎮 LAN <span className="text-primary">Events</span>
           </h1>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl">
+          <p className="text-muted-foreground text-lg mb-10 max-w-2xl tracking-wide">
             Your complete calendar of LAN parties, gaming festivals, and community events. Find your next adventure.
           </p>
 
           <EventsClient events={events} countries={countries} />
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ EVENTS RADAR</span>}
+        rightContent={<span>{events.length} TRACKED</span>}
+      />
 
       {/* JSON-LD for events */}
       <script

@@ -4,6 +4,12 @@ import { useState } from "react";
 import { Star, Trophy } from "lucide-react";
 import NavBar from "../components/NavBar";
 import { lanParties, type LanPartyEntry } from "../data/database";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
+import { GlowContainer } from "@/components/thegridcn/glow-container";
+import { HUDCornerFrame } from "@/components/thegridcn/hud-corner-frame";
 
 const comparableEvents = lanParties.slice(0, 8);
 
@@ -23,7 +29,7 @@ function RatingBar({ value, max = 5 }: { value: number; max?: number }) {
       <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
         <div className="h-full bg-primary rounded-full" style={{ width: `${(value / max) * 100}%` }} />
       </div>
-      <span className="text-xs text-muted-foreground w-6 text-right">{value.toFixed(1)}</span>
+      <span className="text-xs text-muted-foreground w-6 text-right font-mono">{value.toFixed(1)}</span>
     </div>
   );
 }
@@ -106,10 +112,12 @@ export default function ComparePage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+          <UplinkHeader leftText="// COMPARISON MODULE" rightText={`${selectedEvents.length} SELECTED`} className="mb-8" />
+
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
             ⚖️ Compare <span className="text-primary">Events</span>
           </h1>
-          <p className="text-muted-foreground text-lg mb-10">
+          <p className="text-muted-foreground text-lg mb-10 tracking-wide">
             Compare LAN parties side by side to find the perfect event for you.
           </p>
 
@@ -120,50 +128,56 @@ export default function ComparePage() {
                 <select
                   value={slug}
                   onChange={(e) => updateSlot(i, e.target.value)}
-                  className="w-full bg-panel border border-border/50 glow-border rounded-lg px-3 py-3 text-sm text-foreground"
+                  className="w-full bg-card border border-border rounded-lg px-3 py-3 text-sm text-foreground font-mono glow-border"
                 >
                   {comparableEvents.map((e) => (
                     <option key={e.slug} value={e.slug}>{e.flag} {e.name}</option>
                   ))}
                 </select>
                 {selected.length > 2 && (
-                  <button onClick={() => removeSlot(i)} className="text-xs text-muted-foreground hover:text-red-400 mt-1">
+                  <button onClick={() => removeSlot(i)} className="text-xs text-muted-foreground hover:text-red-400 mt-1 font-mono uppercase tracking-wider">
                     Remove
                   </button>
                 )}
               </div>
             ))}
             {selected.length < 3 && (
-              <button onClick={addSlot} className="px-4 py-3 rounded-lg border border-dashed border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/30 transition-colors text-sm">
+              <Button onClick={addSlot} variant="outline" className="uppercase tracking-wider">
                 + Add Event
-              </button>
+              </Button>
             )}
           </div>
 
           {/* Badges */}
           <div className="grid gap-4 mb-8" style={{ gridTemplateColumns: `repeat(${selectedEvents.length}, 1fr)` }}>
             {selectedEvents.map((event) => (
-              <div key={event.slug} className="text-center">
-                <h3 className="font-semibold mb-2">{event.flag} {event.name}</h3>
+              <GlowContainer key={event.slug} hover className="text-center relative">
+                <HUDCornerFrame position="top-left" size={25} />
+                <HUDCornerFrame position="bottom-right" size={25} />
+                <h3 className="font-semibold mb-2 uppercase tracking-wider font-display">{event.flag} {event.name}</h3>
                 <div className="flex flex-wrap justify-center gap-1">
                   {(badges[event.slug] || []).map((badge) => (
-                    <span key={badge} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    <Badge key={badge} variant="secondary" className="text-[10px]">
                       {badge}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
-              </div>
+              </GlowContainer>
             ))}
           </div>
 
           {/* Comparison table */}
-          <div className="rounded-xl bg-panel border border-border/50 glow-border overflow-hidden">
+          <GlowContainer hover={false} intensity="lg" className="p-0 overflow-hidden relative">
+            <HUDCornerFrame position="top-left" />
+            <HUDCornerFrame position="top-right" />
+            <HUDCornerFrame position="bottom-left" />
+            <HUDCornerFrame position="bottom-right" />
             {rows.map((row, i) => (
               <div
                 key={row.label}
                 className={`flex items-center ${i > 0 ? "border-t border-border/30" : ""} ${i === 8 ? "border-t-2 border-primary/20" : ""}`}
               >
-                <div className="w-36 shrink-0 px-4 py-3 text-sm text-muted-foreground font-medium bg-muted/20">
+                <div className="w-36 shrink-0 px-4 py-3 text-[10px] text-muted-foreground font-mono uppercase tracking-widest bg-muted/20">
                   {row.label}
                 </div>
                 {selectedEvents.map((event) => {
@@ -173,7 +187,7 @@ export default function ComparePage() {
                       {row.isRating ? (
                         <RatingBar value={val as number} />
                       ) : (
-                        <span className="text-sm">{val}</span>
+                        <span className="text-sm font-mono">{val}</span>
                       )}
                     </div>
                   );
@@ -183,22 +197,27 @@ export default function ComparePage() {
 
             {/* Overall rating row */}
             <div className="flex items-center border-t-2 border-primary/30 bg-primary/5">
-              <div className="w-36 shrink-0 px-4 py-3 text-sm font-bold text-primary">
+              <div className="w-36 shrink-0 px-4 py-3 text-[10px] font-bold text-primary font-mono uppercase tracking-widest">
                 ⭐ Overall
               </div>
               {selectedEvents.map((event) => {
                 const overall = Object.values(event.ratings).reduce((a, b) => a + b, 0) / 6;
                 return (
                   <div key={event.slug} className="flex-1 px-4 py-3 flex items-center gap-2">
-                    <span className="text-lg font-bold text-primary">{overall.toFixed(1)}</span>
+                    <span className="text-lg font-bold text-primary font-mono">{overall.toFixed(1)}</span>
                     <Stars rating={overall} />
                   </div>
                 );
               })}
             </div>
-          </div>
+          </GlowContainer>
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ COMPARE</span>}
+        rightContent={<span>{selectedEvents.length} EVENTS ANALYZED</span>}
+      />
     </div>
   );
 }

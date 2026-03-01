@@ -3,6 +3,14 @@
 import { useState } from "react";
 import { Copy, Share2, Check } from "lucide-react";
 import NavBar from "../components/NavBar";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
+import { GlowContainer } from "@/components/thegridcn/glow-container";
+import { DataCard } from "@/components/thegridcn/data-card";
+import { AnomalyBanner } from "@/components/thegridcn/anomaly-banner";
+import { HUDCornerFrame } from "@/components/thegridcn/hud-corner-frame";
 
 const eventTypes = [
   { id: "byoc", label: "🖥️ BYOC LAN", desc: "Bring your own computer" },
@@ -24,7 +32,6 @@ interface ChecklistItem {
 }
 
 const allItems: ChecklistItem[] = [
-  // Hardware
   { name: "Desktop PC / Laptop", category: "Hardware", conditions: { types: ["byoc", "esports"] } },
   { name: "Monitor (+ stand if needed)", category: "Hardware", conditions: { types: ["byoc"] } },
   { name: "Power cable for PC", category: "Hardware", conditions: { types: ["byoc", "esports"] } },
@@ -33,7 +40,6 @@ const allItems: ChecklistItem[] = [
   { name: "HDMI / DisplayPort cable", category: "Hardware", conditions: {} },
   { name: "Ethernet cable (Cat 6, 5m+)", category: "Hardware", conditions: {} },
   { name: "USB hub", category: "Hardware", conditions: { types: ["byoc", "esports"] } },
-  // Peripherals
   { name: "Gaming mouse", category: "Peripherals", conditions: { types: ["byoc", "esports"] } },
   { name: "Mouse pad (XL recommended)", category: "Peripherals", conditions: { types: ["byoc", "esports"] } },
   { name: "Keyboard", category: "Peripherals", conditions: { types: ["byoc", "esports"] } },
@@ -42,7 +48,6 @@ const allItems: ChecklistItem[] = [
   { name: "Webcam", category: "Peripherals", conditions: { options: ["streaming"] } },
   { name: "Microphone / stream mic", category: "Peripherals", conditions: { options: ["streaming"] } },
   { name: "Capture card", category: "Peripherals", conditions: { options: ["streaming"] } },
-  // Comfort
   { name: "Sleeping bag / blanket", category: "Comfort", conditions: { durations: ["weekend", "extended"] } },
   { name: "Pillow", category: "Comfort", conditions: { durations: ["weekend", "extended"] } },
   { name: "Air mattress / camping mat", category: "Comfort", conditions: { durations: ["extended"] } },
@@ -51,17 +56,14 @@ const allItems: ChecklistItem[] = [
   { name: "Toothbrush & toiletries", category: "Comfort", conditions: { durations: ["weekend", "extended"] } },
   { name: "Ear plugs for sleeping", category: "Comfort", conditions: { durations: ["weekend", "extended"] } },
   { name: "Eye mask", category: "Comfort", conditions: { durations: ["weekend", "extended"] } },
-  // Food & Drinks
   { name: "Water bottle (reusable)", category: "Food & Drinks", conditions: {} },
   { name: "Energy drinks / coffee", category: "Food & Drinks", conditions: {} },
   { name: "Snacks (chips, nuts, candy)", category: "Food & Drinks", conditions: {} },
   { name: "Cup noodles / easy meals", category: "Food & Drinks", conditions: { durations: ["weekend", "extended"] } },
-  // Documents
   { name: "Ticket / QR code", category: "Documents", conditions: {} },
   { name: "ID / photo ID", category: "Documents", conditions: {} },
   { name: "Cash + card", category: "Documents", conditions: {} },
   { name: "Team registration details", category: "Documents", conditions: { options: ["competitive"] } },
-  // Extras
   { name: "LED strip for desk bling", category: "Extras", conditions: { types: ["byoc"] } },
   { name: "Multi-plug phone charger", category: "Extras", conditions: {} },
   { name: "Portable speaker (for your corner)", category: "Extras", conditions: { types: ["casual"] } },
@@ -78,7 +80,6 @@ const funStats = [
 ];
 
 export default function ChecklistPage() {
-  const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState("");
   const [duration, setDuration] = useState("");
   const [options, setOptions] = useState<Set<string>>(new Set());
@@ -122,36 +123,38 @@ export default function ChecklistPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-3xl mx-auto">
+          <UplinkHeader leftText="// LOADOUT GENERATOR" rightText="CHECKLIST" className="mb-8" />
+
           <div className="text-center mb-12">
-            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
               What Should I Bring? <span className="text-primary">✅</span>
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-lg tracking-wide">
               Generate a personalized packing list for your next LAN party.
             </p>
           </div>
 
           {/* Fun stat */}
-          <div className="text-center mb-10 p-4 rounded-xl bg-primary/5 border border-primary/10">
-            <p className="text-sm text-primary">📊 Did you know? {randomStat}</p>
-          </div>
+          <AnomalyBanner title={randomStat} subtitle="DID YOU KNOW?" animated={false} className="mb-10" />
 
           {/* Step 1 */}
           <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Step 1: What type of event?</h2>
+            <h2 className="text-lg font-semibold mb-4 uppercase tracking-wider font-display">Step 1: What type of event?</h2>
             <div className="grid grid-cols-2 gap-3">
               {eventTypes.map((t) => (
                 <button
                   key={t.id}
-                  onClick={() => { setEventType(t.id); if (!duration) setStep(2); }}
-                  className={`p-4 rounded-xl border text-left transition-all ${
-                    eventType === t.id
-                      ? "bg-primary/10 border-primary/30 text-foreground"
-                      : "bg-card border-border/50 text-muted-foreground hover:border-primary/20"
-                  }`}
+                  onClick={() => setEventType(t.id)}
+                  className="text-left"
                 >
-                  <div className="text-lg mb-1">{t.label}</div>
-                  <div className="text-xs">{t.desc}</div>
+                  <GlowContainer
+                    hover
+                    intensity={eventType === t.id ? "lg" : "sm"}
+                    className={`h-full ${eventType === t.id ? "border-primary/50" : ""}`}
+                  >
+                    <div className="text-lg mb-1">{t.label}</div>
+                    <div className="text-xs text-muted-foreground font-mono">{t.desc}</div>
+                  </GlowContainer>
                 </button>
               ))}
             </div>
@@ -159,19 +162,21 @@ export default function ChecklistPage() {
 
           {/* Step 2 */}
           <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-4">Step 2: How long?</h2>
+            <h2 className="text-lg font-semibold mb-4 uppercase tracking-wider font-display">Step 2: How long?</h2>
             <div className="flex gap-3">
               {durations.map((d) => (
                 <button
                   key={d.id}
-                  onClick={() => { setDuration(d.id); setStep(3); }}
-                  className={`flex-1 p-4 rounded-xl border text-center transition-all ${
-                    duration === d.id
-                      ? "bg-primary/10 border-primary/30 text-foreground"
-                      : "bg-card border-border/50 text-muted-foreground hover:border-primary/20"
-                  }`}
+                  onClick={() => setDuration(d.id)}
+                  className="flex-1"
                 >
-                  {d.label}
+                  <GlowContainer
+                    hover
+                    intensity={duration === d.id ? "lg" : "sm"}
+                    className={`text-center h-full ${duration === d.id ? "border-primary/50" : ""}`}
+                  >
+                    <span className="font-mono text-sm uppercase tracking-wider">{d.label}</span>
+                  </GlowContainer>
                 </button>
               ))}
             </div>
@@ -179,7 +184,7 @@ export default function ChecklistPage() {
 
           {/* Step 3 */}
           <div className="mb-10">
-            <h2 className="text-lg font-semibold mb-4">Step 3: Additional options</h2>
+            <h2 className="text-lg font-semibold mb-4 uppercase tracking-wider font-display">Step 3: Additional options</h2>
             <div className="flex flex-wrap gap-3">
               {[
                 { id: "streaming", label: "📹 Streaming Setup" },
@@ -189,13 +194,13 @@ export default function ChecklistPage() {
                 <button
                   key={opt.id}
                   onClick={() => toggleOption(opt.id)}
-                  className={`px-4 py-2 rounded-lg border text-sm transition-all ${
-                    options.has(opt.id)
-                      ? "bg-primary/10 border-primary/30 text-primary"
-                      : "bg-card border-border/50 text-muted-foreground hover:border-primary/20"
-                  }`}
                 >
-                  {opt.label}
+                  <Badge
+                    variant={options.has(opt.id) ? "default" : "outline"}
+                    className="px-4 py-2 text-sm cursor-pointer"
+                  >
+                    {opt.label}
+                  </Badge>
                 </button>
               ))}
             </div>
@@ -204,33 +209,34 @@ export default function ChecklistPage() {
           {/* Results */}
           {showResults && (
             <div>
+              <UplinkHeader leftText={`// LOADOUT: ${generatedItems.length} ITEMS`} rightText="READY" className="mb-6" />
+
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold">Your Checklist ({generatedItems.length} items)</h2>
+                <h2 className="text-xl font-bold uppercase tracking-wider font-display">Your Checklist ({generatedItems.length} items)</h2>
                 <div className="flex gap-2">
-                  <button
-                    onClick={copyList}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-panel border border-border/50 glow-border text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+                  <Button onClick={copyList} variant="outline" size="sm" className="uppercase tracking-wider">
                     {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                     {copied ? "Copied!" : "Copy"}
-                  </button>
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-panel border border-border/50 glow-border text-sm text-muted-foreground hover:text-foreground transition-colors cursor-not-allowed opacity-75">
+                  </Button>
+                  <Button variant="outline" size="sm" disabled className="uppercase tracking-wider opacity-75">
                     <Share2 className="w-3.5 h-3.5" /> Share
-                  </button>
+                  </Button>
                 </div>
               </div>
 
-              <div className="text-sm text-muted-foreground mb-4">
-                {checked.size} of {generatedItems.length} packed
-              </div>
-              <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-8">
-                <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${generatedItems.length > 0 ? (checked.size / generatedItems.length) * 100 : 0}%` }} />
-              </div>
+              <DataCard
+                title="Packing Progress"
+                fields={[
+                  { label: "Packed", value: `${checked.size} / ${generatedItems.length}`, highlight: checked.size === generatedItems.length },
+                  { label: "Percentage", value: `${generatedItems.length > 0 ? Math.round((checked.size / generatedItems.length) * 100) : 0}%` },
+                ]}
+                className="mb-8"
+              />
 
               <div className="space-y-6">
                 {categories.map((cat) => (
                   <div key={cat}>
-                    <h3 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">{cat}</h3>
+                    <h3 className="text-[10px] font-mono font-semibold text-primary uppercase tracking-[0.3em] mb-3">{cat}</h3>
                     <div className="space-y-1">
                       {generatedItems.filter((i) => i.category === cat).map((item) => (
                         <label key={item.name} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30 cursor-pointer transition-colors">
@@ -247,7 +253,7 @@ export default function ChecklistPage() {
                             }}
                             className="w-4 h-4 rounded accent-primary"
                           />
-                          <span className={`text-sm ${checked.has(item.name) ? "line-through text-muted-foreground" : ""}`}>
+                          <span className={`text-sm font-mono ${checked.has(item.name) ? "line-through text-muted-foreground" : ""}`}>
                             {item.name}
                           </span>
                         </label>
@@ -260,6 +266,11 @@ export default function ChecklistPage() {
           )}
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ LOADOUT</span>}
+        rightContent={showResults ? <span>{checked.size} / {generatedItems.length} PACKED</span> : <span>CONFIGURE LOADOUT</span>}
+      />
     </div>
   );
 }

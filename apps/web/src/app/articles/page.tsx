@@ -1,6 +1,8 @@
 import { articles } from "../data/articles";
 import ArticlesClient from "../components/ArticlesClient";
 import NavBar from "../components/NavBar";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,16 +17,23 @@ export default function ArticlesPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+          <UplinkHeader leftText="// DATA ARCHIVE" rightText="ARTICLES" className="mb-8" />
+
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
             📝 <span className="text-primary">Articles</span>
           </h1>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl">
+          <p className="text-muted-foreground text-lg mb-10 max-w-2xl tracking-wide">
             Deep dives into LAN culture, event recaps, guides, and gaming stories from the community.
           </p>
 
           <ArticlesClient articles={articles} />
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ ARCHIVE</span>}
+        rightContent={<span>{articles.length} ENTRIES</span>}
+      />
 
       {/* JSON-LD */}
       <script

@@ -1,0 +1,122 @@
+/* The Gridcn - Tron Theme Styles */
+
+/* Glow utilities */
+.glow-sm {
+  box-shadow: 0 0 5px var(--glow-muted);
+}
+
+.glow {
+  box-shadow: 0 0 10px var(--glow-muted), 0 0 30px rgba(0, 212, 255, 0.1);
+}
+
+.glow-lg {
+  box-shadow: 0 0 15px var(--glow), 0 0 40px var(--glow-muted);
+}
+
+.glow-border {
+  box-shadow: 0 0 5px var(--glow-muted), inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.glow-box {
+  box-shadow: 0 0 10px var(--glow-muted), 0 0 30px rgba(0, 212, 255, 0.1);
+}
+
+.glow-text {
+  text-shadow: 0 0 10px var(--glow), 0 0 20px var(--glow-muted);
+}
+
+.glow-pulse {
+  animation: glow-pulse-anim 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse-anim {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--glow-muted);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--glow), 0 0 30px var(--glow-muted);
+  }
+}
+
+/* Data slot glow effects for cards */
+[data-slot="card"] {
+  border-color: var(--border);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+[data-slot="card"]:hover {
+  border-color: var(--glow-muted);
+  box-shadow: 0 0 8px var(--glow-muted), 0 0 24px rgba(0, 212, 255, 0.08);
+}
+
+/* Button glow on hover */
+[data-slot="button"][data-variant="default"]:hover {
+  box-shadow: 0 0 10px var(--glow-muted), 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+/* Badge glow */
+[data-slot="badge"] {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Tron data card scanlines */
+[data-slot="tron-data-card"] {
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+[data-slot="tron-data-card"]:hover {
+  box-shadow: 0 0 8px var(--glow-muted);
+}
+
+/* Status bar */
+[data-slot="tron-status-bar"] {
+  font-family: var(--font-mono);
+}
+
+/* Timer glow effect */
+[data-slot="tron-timer-value"][data-variant="default"] {
+  text-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow-muted);
+}
+
+[data-slot="tron-timer-value"][data-variant="countdown"] {
+  text-shadow: 0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3);
+}
+
+/* Progress indicator glow */
+[data-slot="tron-progress-indicator"] {
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+/* Anomaly title glitch */
+[data-slot="tron-anomaly-title"] {
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glow-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--glow);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

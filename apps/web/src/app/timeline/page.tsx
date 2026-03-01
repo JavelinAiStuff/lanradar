@@ -1,5 +1,10 @@
 import NavBar from "../components/NavBar";
 import { timelineEvents } from "../data/timeline";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
+import { HUDCornerFrame } from "@/components/thegridcn/hud-corner-frame";
+import { CircuitBackground } from "@/components/thegridcn/circuit-background";
+import { Badge } from "@/components/ui/badge";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,14 +19,16 @@ export default function TimelinePage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+          <UplinkHeader leftText="// TEMPORAL LOG" rightText="TIMELINE" className="mb-8" />
+
+          <CircuitBackground className="text-center mb-16 py-8 rounded-xl">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
               🕰️ LAN Party <span className="text-primary">Timeline</span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-xl mx-auto tracking-wide">
               From basement gatherings to 60,000-person festivals. The evolution of LAN culture.
             </p>
-          </div>
+          </CircuitBackground>
 
           {/* Timeline */}
           <div className="relative">
@@ -42,11 +49,13 @@ export default function TimelinePage() {
 
                     {/* Content */}
                     <div className={`flex-1 md:w-[calc(50%-2rem)] ${isLeft ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                      <div className="p-5 rounded-xl bg-panel border border-border/50 glow-border hover:border-primary/30 transition-colors">
-                        <span className="inline-block text-xs font-mono text-primary bg-primary/10 px-2 py-0.5 rounded mb-2">
+                      <div className="relative p-5 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors glow-border">
+                        <HUDCornerFrame position="top-left" size={20} />
+                        <HUDCornerFrame position="bottom-right" size={20} />
+                        <Badge variant="outline" className="mb-2 font-mono text-[10px] tracking-widest">
                           {event.year}
-                        </span>
-                        <h3 className="font-bold text-lg mb-2">{event.title}</h3>
+                        </Badge>
+                        <h3 className="font-bold text-lg mb-2 uppercase tracking-wide">{event.title}</h3>
                         <p className="text-sm text-muted-foreground leading-relaxed">{event.description}</p>
                       </div>
                     </div>
@@ -60,6 +69,11 @@ export default function TimelinePage() {
           </div>
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ TIMELINE</span>}
+        rightContent={<span>{timelineEvents.length} MILESTONES</span>}
+      />
     </div>
   );
 }

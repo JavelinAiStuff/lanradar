@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { ChevronDown, Download, Quote } from "lucide-react";
 import NavBar from "../components/NavBar";
+import { Button } from "@/components/ui/button";
+import { UplinkHeader } from "@/components/thegridcn/uplink-header";
+import { StatusBar } from "@/components/thegridcn/status-bar";
+import { GlowContainer } from "@/components/thegridcn/glow-container";
+import { HUDCornerFrame } from "@/components/thegridcn/hud-corner-frame";
+import { DataCard } from "@/components/thegridcn/data-card";
 
 const sections = [
   {
@@ -82,10 +88,12 @@ export default function GuidesPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
+          <UplinkHeader leftText="// GUIDE" rightText="LAN PARTY ORGANIZER" className="mb-8" />
+
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 uppercase tracking-wider glow-text">
             Start Your Own LAN Party <span className="text-primary">🎮</span>
           </h1>
-          <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
+          <p className="text-muted-foreground text-lg mb-12 max-w-2xl tracking-wide">
             Everything you need to know to organize your first (or next) LAN party. From planning to post-event, we&apos;ve got you covered.
           </p>
 
@@ -93,12 +101,12 @@ export default function GuidesPage() {
             {/* Main content */}
             <div className="flex-1 space-y-4">
               {sections.map((section, i) => (
-                <div key={i} className="rounded-xl bg-panel border border-border/50 glow-border overflow-hidden">
+                <GlowContainer key={i} hover className="p-0 overflow-hidden">
                   <button
                     onClick={() => toggleSection(i)}
                     className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
                   >
-                    <h2 className="text-lg font-semibold">
+                    <h2 className="text-lg font-semibold uppercase tracking-wider">
                       {section.emoji} {section.title}
                     </h2>
                     <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${openSections.has(i) ? "rotate-180" : ""}`} />
@@ -115,7 +123,7 @@ export default function GuidesPage() {
                               onChange={() => toggleCheck(item)}
                               className="w-4 h-4 rounded border-border accent-primary"
                             />
-                            <span className={`${checkedItems.has(item) ? "line-through text-muted-foreground" : "text-foreground"} group-hover:text-primary transition-colors`}>
+                            <span className={`font-mono text-xs tracking-wide ${checkedItems.has(item) ? "line-through text-muted-foreground" : "text-foreground"} group-hover:text-primary transition-colors`}>
                               {item}
                             </span>
                           </label>
@@ -123,41 +131,48 @@ export default function GuidesPage() {
                       </div>
                     </div>
                   )}
-                </div>
+                </GlowContainer>
               ))}
             </div>
 
             {/* Sidebar */}
             <div className="lg:w-72 space-y-6">
               {/* Progress */}
-              <div className="p-5 rounded-xl bg-panel border border-border/50 glow-border">
-                <h3 className="font-semibold mb-3">📊 Your Progress</h3>
-                <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
-                  <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
-                </div>
-                <p className="text-sm text-muted-foreground">{checkedCount} of {allChecklistItems.length} tasks done</p>
-              </div>
+              <DataCard
+                title="Your Progress"
+                subtitle="COMPLETION"
+                fields={[
+                  { label: "Tasks Done", value: `${checkedCount} / ${allChecklistItems.length}`, highlight: checkedCount === allChecklistItems.length },
+                  { label: "Percentage", value: `${Math.round(progress)}%` },
+                ]}
+              />
 
               {/* Download */}
-              <button className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-primary/10 border border-primary/20 text-primary font-medium text-sm hover:bg-primary/20 transition-colors cursor-not-allowed opacity-75">
+              <Button variant="outline" disabled className="w-full uppercase tracking-wider opacity-75">
                 <Download className="w-4 h-4" /> Download Checklist (PDF) — Soon
-              </button>
+              </Button>
 
               {/* Tips */}
               <div className="space-y-4">
-                <h3 className="font-semibold">💡 Tips from the Pros</h3>
+                <h3 className="font-semibold uppercase tracking-wider font-display">💡 Tips from the Pros</h3>
                 {tips.map((tip, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
+                  <GlowContainer key={i} hover className="relative">
+                    <HUDCornerFrame position="top-left" size={20} />
                     <Quote className="w-4 h-4 text-primary mb-2" />
-                    <p className="text-sm text-muted-foreground italic mb-2">&ldquo;{tip.text}&rdquo;</p>
-                    <p className="text-xs text-primary">— {tip.author}</p>
-                  </div>
+                    <p className="text-sm text-muted-foreground italic mb-2 font-mono text-xs">&ldquo;{tip.text}&rdquo;</p>
+                    <p className="text-xs text-primary font-mono tracking-wider">— {tip.author}</p>
+                  </GlowContainer>
                 ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <StatusBar
+        leftContent={<span>⚡ GUIDE</span>}
+        rightContent={<span>{checkedCount} / {allChecklistItems.length} COMPLETE</span>}
+      />
     </div>
   );
 }

@@ -22,20 +22,20 @@ export default function NavBar({ active }: { active?: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80 glow-border">
+    <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
           <Radar className="w-6 h-6 text-primary" />
-          <span className="font-display font-bold text-lg glow-text">LAN Radar</span>
+          <span className="font-display font-bold text-lg uppercase tracking-[0.2em] glow-text">LAN Radar</span>
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex gap-5 text-sm text-muted-foreground items-center">
+        <div className="hidden md:flex gap-5 text-sm text-muted-foreground items-center font-mono uppercase tracking-wider">
           {mainLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`hover:text-foreground transition-colors ${active === link.label.toLowerCase() ? "text-foreground font-medium" : ""}`}
+              className={`hover:text-primary transition-colors ${active === link.label.toLowerCase() ? "text-primary font-medium" : ""}`}
             >
               {link.label}
             </a>
@@ -45,19 +45,19 @@ export default function NavBar({ active }: { active?: string }) {
             <button
               onClick={() => setToolsOpen(!toolsOpen)}
               onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
-              className={`flex items-center gap-1 hover:text-foreground transition-colors ${
-                ["timeline", "checklist", "compare"].includes(active || "") ? "text-foreground font-medium" : ""
+              className={`flex items-center gap-1 hover:text-primary transition-colors ${
+                ["timeline", "checklist", "compare"].includes(active || "") ? "text-primary font-medium" : ""
               }`}
             >
               Tools <ChevronDown className={`w-3 h-3 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
             </button>
             {toolsOpen && (
-              <div className="absolute top-full right-0 mt-2 bg-card border border-border/50 rounded-lg py-1 min-w-[160px] shadow-xl">
+              <div className="absolute top-full right-0 mt-2 bg-card border border-border/50 rounded-lg py-1 min-w-[160px] shadow-xl glow-border">
                 {toolLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-muted/50 transition-colors"
                   >
                     {link.label}
                   </a>
@@ -86,7 +86,7 @@ export default function NavBar({ active }: { active?: string }) {
             <a
               key={link.href}
               href={link.href}
-              className={`block text-sm ${active === link.label.toLowerCase() ? "text-foreground font-medium" : "text-muted-foreground"} hover:text-foreground transition-colors`}
+              className={`block text-sm font-mono uppercase tracking-wider ${active === link.label.toLowerCase() ? "text-primary font-medium" : "text-muted-foreground"} hover:text-primary transition-colors`}
             >
               {link.label}
             </a>
