@@ -12,6 +12,7 @@ import {
   Filter,
 } from "lucide-react";
 import type { LanEvent } from "../data/events";
+import Countdown from "../../components/Countdown";
 
 type View = "grid" | "list" | "map";
 
@@ -267,7 +268,7 @@ function EventCard({ event }: { event: LanEvent }) {
           {event.attendance} expected
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 flex items-center justify-between">
         <span
           className={`text-xs px-2 py-1 rounded-full ${
             event.size === "large"
@@ -280,6 +281,9 @@ function EventCard({ event }: { event: LanEvent }) {
           {event.size}
         </span>
       </div>
+      {new Date(event.startDate) > new Date() && (
+        <Countdown targetDate={event.startDate} compact label="Starts in:" />
+      )}
     </a>
   );
 }

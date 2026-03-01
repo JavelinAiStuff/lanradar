@@ -1,6 +1,6 @@
-import { Radar } from "lucide-react";
 import { articles } from "../data/articles";
 import ArticlesClient from "../components/ArticlesClient";
+import NavBar from "../components/NavBar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,19 +11,7 @@ export const metadata: Metadata = {
 export default function ArticlesPage() {
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2">
-            <Radar className="w-6 h-6 text-primary" />
-            <span className="font-bold text-lg">LAN Radar</span>
-          </a>
-          <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="/events" className="hover:text-foreground transition-colors">Events</a>
-            <a href="/articles" className="text-foreground font-medium">Articles</a>
-            <a href="/#newsletter" className="hover:text-foreground transition-colors">Newsletter</a>
-          </div>
-        </div>
-      </nav>
+      <NavBar active="articles" />
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">

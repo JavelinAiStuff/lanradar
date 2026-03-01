@@ -1,5 +1,4 @@
 import {
-  Radar,
   Calendar,
   Newspaper,
   Camera,
@@ -10,7 +9,9 @@ import {
   Users,
   ExternalLink,
   ArrowRight,
+  Radar,
 } from "lucide-react";
+import NavBar from "./components/NavBar";
 import { events } from "./data/events";
 import { articles } from "./data/articles";
 
@@ -21,21 +22,7 @@ const latestArticles = articles.filter((a) => a !== featuredArticle).slice(0, 4)
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
-      <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Radar className="w-6 h-6 text-primary" />
-            <span className="font-bold text-lg">LAN Radar</span>
-          </div>
-          <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="/events" className="hover:text-foreground transition-colors">Events</a>
-            <a href="/articles" className="hover:text-foreground transition-colors">Articles</a>
-            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#newsletter" className="hover:text-foreground transition-colors">Newsletter</a>
-          </div>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* Hero */}
       <section className="relative pt-32 pb-24 px-6 overflow-hidden">
