@@ -15,7 +15,7 @@ export default function ArticlesPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
             📝 <span className="text-primary">Articles</span>
           </h1>
           <p className="text-muted-foreground text-lg mb-10 max-w-2xl">

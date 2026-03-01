@@ -123,7 +123,7 @@ export default function ChecklistPage() {
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
               What Should I Bring? <span className="text-primary">✅</span>
             </h1>
             <p className="text-muted-foreground text-lg">
@@ -209,12 +209,12 @@ export default function ChecklistPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={copyList}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card border border-border/50 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-panel border border-border/50 glow-border text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                     {copied ? "Copied!" : "Copy"}
                   </button>
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card border border-border/50 text-sm text-muted-foreground hover:text-foreground transition-colors cursor-not-allowed opacity-75">
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-panel border border-border/50 glow-border text-sm text-muted-foreground hover:text-foreground transition-colors cursor-not-allowed opacity-75">
                     <Share2 className="w-3.5 h-3.5" /> Share
                   </button>
                 </div>

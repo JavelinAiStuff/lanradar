@@ -15,7 +15,7 @@ export default function TimelinePage() {
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+            <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
               🕰️ LAN Party <span className="text-primary">Timeline</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto">
@@ -42,7 +42,7 @@ export default function TimelinePage() {
 
                     {/* Content */}
                     <div className={`flex-1 md:w-[calc(50%-2rem)] ${isLeft ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                      <div className="p-5 rounded-xl bg-card border border-border/50 hover:border-primary/30 transition-colors">
+                      <div className="p-5 rounded-xl bg-panel border border-border/50 glow-border hover:border-primary/30 transition-colors">
                         <span className="inline-block text-xs font-mono text-primary bg-primary/10 px-2 py-0.5 rounded mb-2">
                           {event.year}
                         </span>

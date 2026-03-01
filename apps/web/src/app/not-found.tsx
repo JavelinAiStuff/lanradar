@@ -10,7 +10,7 @@ export default function NotFound() {
             <span className="text-4xl font-extrabold text-primary">404</span>
           </div>
         </div>
-        <h1 className="text-3xl font-extrabold mb-4">
+        <h1 className="font-display text-3xl font-extrabold mb-4 glow-text">
           Signal <span className="text-primary">Lost</span>
         </h1>
         <p className="text-muted-foreground mb-8">

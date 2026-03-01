@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
+import { Rajdhani, Orbitron } from "next/font/google";
 import "./globals.css";
 import { GTMScript, GTMNoscript } from "./components/GTMScript";
+
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-rajdhani",
+});
+
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-orbitron",
+});
 
 const siteUrl = "https://lanradar.com";
 
@@ -81,11 +94,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${rajdhani.variable} ${orbitron.variable}`}>
       <head>
         <GTMScript />
       </head>
-      <body className="antialiased">
+      <body className="font-sans antialiased">
         <GTMNoscript />
         {children}
         <script

@@ -22,11 +22,11 @@ export default function NavBar({ active }: { active?: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80">
+    <nav className="border-b border-border/50 backdrop-blur-sm fixed top-0 w-full z-50 bg-background/80 glow-border">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
           <Radar className="w-6 h-6 text-primary" />
-          <span className="font-bold text-lg">LAN Radar</span>
+          <span className="font-display font-bold text-lg glow-text">LAN Radar</span>
         </a>
 
         {/* Desktop Nav */}

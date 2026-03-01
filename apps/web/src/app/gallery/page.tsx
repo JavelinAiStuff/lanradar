@@ -51,7 +51,7 @@ export default function GalleryPage() {
         <div className="max-w-6xl mx-auto">
           {/* Hero */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-extrabold mb-4">
+            <h1 className="font-display text-4xl md:text-6xl font-extrabold mb-4 glow-text">
               Were You There? <span className="text-primary">📸</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto">
@@ -78,7 +78,7 @@ export default function GalleryPage() {
           {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filtered.map((photo) => (
-              <div key={photo.id} className="rounded-xl overflow-hidden bg-card border border-border/50 group hover:border-primary/30 transition-colors">
+              <div key={photo.id} className="rounded-xl overflow-hidden bg-panel border border-border/50 group hover:border-primary/30 glow-border transition-colors">
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={photo.image} alt={photo.event} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>

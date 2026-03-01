@@ -106,7 +106,7 @@ export default function ComparePage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
             ⚖️ Compare <span className="text-primary">Events</span>
           </h1>
           <p className="text-muted-foreground text-lg mb-10">
@@ -120,7 +120,7 @@ export default function ComparePage() {
                 <select
                   value={slug}
                   onChange={(e) => updateSlot(i, e.target.value)}
-                  className="w-full bg-card border border-border/50 rounded-lg px-3 py-3 text-sm text-foreground"
+                  className="w-full bg-panel border border-border/50 glow-border rounded-lg px-3 py-3 text-sm text-foreground"
                 >
                   {comparableEvents.map((e) => (
                     <option key={e.slug} value={e.slug}>{e.flag} {e.name}</option>
@@ -157,7 +157,7 @@ export default function ComparePage() {
           </div>
 
           {/* Comparison table */}
-          <div className="rounded-xl bg-card border border-border/50 overflow-hidden">
+          <div className="rounded-xl bg-panel border border-border/50 glow-border overflow-hidden">
             {rows.map((row, i) => (
               <div
                 key={row.label}

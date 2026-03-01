@@ -4,6 +4,24 @@ import { useState, useMemo } from "react";
 import { Search, Star, ExternalLink, MapPin, Users, Filter, X } from "lucide-react";
 import NavBar from "../components/NavBar";
 import { lanParties, allGames, allCountries, allRegions } from "../data/database";
+import EventMap from "../../components/EventMap";
+
+const cityCoords: Record<string, [number, number]> = {
+  "Jönköping": [57.78, 14.16],
+  "Helsinki": [60.17, 24.94],
+  "Dallas, Texas": [32.78, -96.8],
+  "Birmingham": [52.49, -1.89],
+  "Cologne": [50.94, 6.96],
+  "Wieze": [51.0, 4.02],
+  "Enschede": [52.22, 6.89],
+  "Utrecht": [52.09, 5.12],
+  "Stockholm": [59.33, 18.07],
+  "Stafford": [52.81, -2.12],
+  "Hannover": [52.37, 9.74],
+  "Hamar": [60.79, 11.07],
+  "Bilbao": [43.26, -2.93],
+  "Tampere": [61.5, 23.79],
+};
 
 const sizeCategories = [
   { value: "small", label: "Small (<100)", max: 100 },
@@ -47,46 +65,30 @@ export default function DatabasePage() {
 
   const activeFilters = [countryFilter, regionFilter, sizeFilter, gameFilter].filter((f) => f !== "All").length;
 
+  const mapEvents = filtered
+    .map((p) => {
+      const coords = cityCoords[p.city];
+      if (!coords) return null;
+      return { name: p.name, lat: coords[0], lng: coords[1], flag: p.flag, date: p.dates };
+    })
+    .filter(Boolean) as { name: string; lat: number; lng: number; flag: string; date: string }[];
+
   return (
     <div className="min-h-screen bg-background">
       <NavBar active="database" />
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
             🗃️ LAN Party <span className="text-primary">Database</span>
           </h1>
           <p className="text-muted-foreground text-lg mb-8 max-w-2xl">
             Search and discover LAN parties across Europe and North America. Filter by country, size, and games.
           </p>
 
-          {/* Map placeholder */}
-          <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden mb-10 bg-card border border-border/50">
-            <div className="absolute inset-0" style={{
-              background: "radial-gradient(ellipse at 60% 50%, rgba(34,211,238,0.08) 0%, transparent 70%), radial-gradient(ellipse at 30% 40%, rgba(99,102,241,0.06) 0%, transparent 60%)",
-            }} />
-            <div className="absolute inset-0 opacity-10">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={`h${i}`} className="absolute w-full border-t border-primary/20" style={{ top: `${(i + 1) * 12}%` }} />
-              ))}
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={`v${i}`} className="absolute h-full border-l border-primary/20" style={{ left: `${(i + 1) * 8}%` }} />
-              ))}
-            </div>
-            {/* Fake dots */}
-            {[
-              { x: 55, y: 35 }, { x: 60, y: 30 }, { x: 52, y: 45 }, { x: 48, y: 40 },
-              { x: 65, y: 25 }, { x: 70, y: 38 }, { x: 25, y: 42 },
-            ].map((dot, i) => (
-              <div key={i} className="absolute w-2 h-2 bg-primary/40 rounded-full animate-pulse" style={{ left: `${dot.x}%`, top: `${dot.y}%` }} />
-            ))}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-8 h-8 text-primary/50 mx-auto mb-2" />
-                <p className="text-lg font-semibold text-foreground/80">Map View Coming Soon</p>
-                <p className="text-sm text-muted-foreground">Interactive map of all LAN parties worldwide</p>
-              </div>
-            </div>
+          {/* Interactive Map */}
+          <div className="mb-10">
+            <EventMap events={mapEvents} />
           </div>
 
           {/* Search + Filter toggle */}
@@ -98,13 +100,13 @@ export default function DatabasePage() {
                 placeholder="Search LAN parties..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-card border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full pl-10 pr-4 py-3 bg-panel border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-4 py-3 rounded-lg border transition-colors ${
-                showFilters || activeFilters > 0 ? "bg-primary/10 border-primary/30 text-primary" : "bg-card border-border/50 text-muted-foreground hover:text-foreground"
+                showFilters || activeFilters > 0 ? "bg-primary/10 border-primary/30 text-primary" : "bg-panel border-border/50 text-muted-foreground hover:text-foreground"
               }`}
             >
               <Filter className="w-4 h-4" />
@@ -118,7 +120,7 @@ export default function DatabasePage() {
               <div className="w-64 shrink-0 space-y-5">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Country</label>
-                  <select value={countryFilter} onChange={(e) => setCountryFilter(e.target.value)} className="w-full bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
+                  <select value={countryFilter} onChange={(e) => setCountryFilter(e.target.value)} className="w-full bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
                     <option value="All">All Countries</option>
                     {allCountries.map((c) => {
                       const flag = lanParties.find((p) => p.country === c)?.flag;
@@ -128,21 +130,21 @@ export default function DatabasePage() {
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Region</label>
-                  <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)} className="w-full bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
+                  <select value={regionFilter} onChange={(e) => setRegionFilter(e.target.value)} className="w-full bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
                     <option value="All">All Regions</option>
                     {allRegions.map((r) => <option key={r} value={r}>{r}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Size</label>
-                  <select value={sizeFilter} onChange={(e) => setSizeFilter(e.target.value)} className="w-full bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
+                  <select value={sizeFilter} onChange={(e) => setSizeFilter(e.target.value)} className="w-full bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
                     <option value="All">All Sizes</option>
                     {sizeCategories.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 block">Games</label>
-                  <select value={gameFilter} onChange={(e) => setGameFilter(e.target.value)} className="w-full bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
+                  <select value={gameFilter} onChange={(e) => setGameFilter(e.target.value)} className="w-full bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground">
                     <option value="All">All Games</option>
                     {allGames.map((g) => <option key={g} value={g}>{g}</option>)}
                   </select>
@@ -168,10 +170,10 @@ export default function DatabasePage() {
                   <a
                     key={party.slug}
                     href={`/database/${party.slug}`}
-                    className="p-5 rounded-xl bg-card border border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group block"
+                    className="p-5 rounded-xl bg-panel border border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group block glow-border"
                   >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+                      <h3 className="font-display font-semibold text-lg group-hover:text-primary transition-colors">
                         {party.flag} {party.name}
                       </h3>
                       <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />

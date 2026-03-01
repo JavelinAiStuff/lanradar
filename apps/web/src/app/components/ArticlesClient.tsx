@@ -26,7 +26,7 @@ export default function ArticlesClient({ articles }: { articles: Article[] }) {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               category === cat
                 ? "bg-primary text-primary-foreground"
-                : "bg-card border border-border/50 text-muted-foreground hover:text-foreground"
+                : "bg-panel border border-border/50 glow-border text-muted-foreground hover:text-foreground"
             }`}
           >
             {cat}
@@ -36,7 +36,7 @@ export default function ArticlesClient({ articles }: { articles: Article[] }) {
 
       {/* Featured article */}
       {featured && (
-        <div className="mb-12 rounded-xl overflow-hidden bg-card border border-border/50 hover:border-primary/30 transition-colors group cursor-pointer">
+        <div className="mb-12 rounded-xl overflow-hidden bg-panel border border-border/50 glow-border hover:border-primary/30 transition-colors group cursor-pointer">
           <div className="md:flex">
             <div className="md:w-1/2 aspect-video md:aspect-auto overflow-hidden">
               <img
@@ -70,7 +70,7 @@ export default function ArticlesClient({ articles }: { articles: Article[] }) {
         {rest.map((article) => (
           <div
             key={article.slug}
-            className="rounded-xl bg-card border border-border/50 overflow-hidden hover:border-primary/30 transition-colors group cursor-pointer"
+            className="rounded-xl bg-panel border border-border/50 glow-border overflow-hidden hover:border-primary/30 transition-colors group cursor-pointer"
           >
             <div className="aspect-video overflow-hidden">
               <img

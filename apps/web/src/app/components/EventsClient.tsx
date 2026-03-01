@@ -13,16 +13,9 @@ import {
 } from "lucide-react";
 import type { LanEvent } from "../data/events";
 import Countdown from "../../components/Countdown";
+import EventMap from "../../components/EventMap";
 
 type View = "grid" | "list" | "map";
-
-// CSS map: approximate positions for European + US locations
-function getMapPosition(lat: number, lng: number) {
-  // Map bounds: lat 30-65, lng -100 to 30 (covers EU + US)
-  const x = ((lng + 100) / 130) * 100;
-  const y = ((65 - lat) / 35) * 100;
-  return { x: Math.max(2, Math.min(98, x)), y: Math.max(2, Math.min(98, y)) };
-}
 
 export default function EventsClient({
   events,
@@ -61,8 +54,7 @@ export default function EventsClient({
     <div>
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-4 mb-8">
-        {/* View toggles */}
-        <div className="flex bg-card border border-border/50 rounded-lg overflow-hidden">
+        <div className="flex bg-panel border border-border/50 rounded-lg overflow-hidden glow-border">
           {([
             ["grid", Grid3X3],
             ["list", List],
@@ -83,25 +75,22 @@ export default function EventsClient({
           ))}
         </div>
 
-        {/* Filters */}
         <div className="flex items-center gap-2 ml-auto">
           <Filter className="w-4 h-4 text-muted-foreground" />
           <select
             value={countryFilter}
             onChange={(e) => setCountryFilter(e.target.value)}
-            className="bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
+            className="bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
           >
             <option value="All">All Countries</option>
             {countries.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
           <select
             value={sizeFilter}
             onChange={(e) => setSizeFilter(e.target.value)}
-            className="bg-card border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
+            className="bg-panel border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground"
           >
             <option value="All">All Sizes</option>
             <option value="small">Small (&lt;1000)</option>
@@ -119,10 +108,7 @@ export default function EventsClient({
       {view === "grid" && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered
-            .sort(
-              (a, b) =>
-                new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-            )
+            .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
             .map((event) => (
               <EventCard key={event.name} event={event} />
             ))}
@@ -134,7 +120,7 @@ export default function EventsClient({
         <div className="space-y-8">
           {Object.entries(grouped).map(([month, evts]) => (
             <div key={month}>
-              <h3 className="text-lg font-bold text-primary mb-4 border-b border-border/50 pb-2">
+              <h3 className="font-display text-lg font-bold text-primary mb-4 border-b border-border/50 pb-2">
                 {month}
               </h3>
               <div className="space-y-3">
@@ -144,11 +130,11 @@ export default function EventsClient({
                     href={event.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border/50 hover:border-primary/50 transition-all group"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-panel border border-border/50 hover:border-primary/50 transition-all group glow-border"
                   >
                     <div className="text-2xl">{event.flag}</div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold group-hover:text-primary transition-colors">
+                      <h4 className="font-display font-semibold group-hover:text-primary transition-colors">
                         {event.name}
                       </h4>
                       <p className="text-sm text-muted-foreground">
@@ -170,71 +156,17 @@ export default function EventsClient({
 
       {/* Map View */}
       {view === "map" && (
-        <div className="relative w-full aspect-[2/1] bg-card border border-border/50 rounded-xl overflow-hidden">
-          {/* CSS-based map background */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0" style={{
-              background: `
-                radial-gradient(circle at 75% 40%, rgba(34,211,238,0.15) 0%, transparent 50%),
-                radial-gradient(circle at 60% 50%, rgba(99,102,241,0.1) 0%, transparent 40%),
-                linear-gradient(180deg, rgba(34,211,238,0.05) 0%, transparent 100%)
-              `,
-            }} />
-            {/* Grid lines */}
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                key={`h${i}`}
-                className="absolute w-full border-t border-primary/10"
-                style={{ top: `${(i + 1) * 10}%` }}
-              />
-            ))}
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                key={`v${i}`}
-                className="absolute h-full border-l border-primary/10"
-                style={{ left: `${(i + 1) * 10}%` }}
-              />
-            ))}
-          </div>
-
-          {/* Label */}
-          <div className="absolute top-4 left-4 text-xs text-muted-foreground bg-background/80 px-3 py-1 rounded-full">
-            Interactive map coming soon — showing approximate locations
-          </div>
-
-          {/* Event dots */}
-          {filtered.map((event) => {
-            const pos = getMapPosition(event.lat, event.lng);
-            return (
-              <a
-                key={event.name}
-                href={event.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute group"
-                style={{
-                  left: `${pos.x}%`,
-                  top: `${pos.y}%`,
-                  transform: "translate(-50%, -50%)",
-                }}
-              >
-                <div
-                  className={`rounded-full bg-primary shadow-lg shadow-primary/50 ${
-                    event.size === "large"
-                      ? "w-4 h-4"
-                      : event.size === "medium"
-                      ? "w-3 h-3"
-                      : "w-2 h-2"
-                  }`}
-                />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-background/95 border border-border/50 rounded-lg px-3 py-2 whitespace-nowrap text-xs z-10">
-                  <div className="font-semibold">{event.flag} {event.name}</div>
-                  <div className="text-muted-foreground">{event.date}</div>
-                </div>
-              </a>
-            );
-          })}
-        </div>
+        <EventMap
+          events={filtered.map((e) => ({
+            name: e.name,
+            lat: e.lat,
+            lng: e.lng,
+            date: e.date,
+            flag: e.flag,
+            attendance: e.attendance,
+            url: e.url,
+          }))}
+        />
       )}
     </div>
   );
@@ -246,10 +178,10 @@ function EventCard({ event }: { event: LanEvent }) {
       href={event.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-6 rounded-xl bg-card border border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group block"
+      className="p-6 rounded-xl bg-panel border border-border/50 hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group block glow-border"
     >
       <div className="flex items-start justify-between mb-3">
-        <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+        <h3 className="font-display font-semibold text-lg group-hover:text-primary transition-colors">
           {event.flag} {event.name}
         </h3>
         <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />

@@ -54,14 +54,14 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
           </a>
 
           {/* Hero */}
-          <div className="relative rounded-xl overflow-hidden mb-8 bg-card border border-border/50">
+          <div className="relative rounded-xl overflow-hidden mb-8 bg-panel border border-border/50 glow-border">
             <div className="h-48 md:h-64" style={{
               background: `linear-gradient(135deg, rgba(34,211,238,0.15) 0%, rgba(99,102,241,0.1) 50%, rgba(34,211,238,0.05) 100%)`,
             }}>
               <div className="absolute inset-0 flex items-end p-8">
                 <div>
                   <div className="text-4xl mb-2">{party.flag}</div>
-                  <h1 className="text-3xl md:text-4xl font-extrabold mb-2">{party.name}</h1>
+                  <h1 className="font-display text-3xl md:text-4xl font-extrabold mb-2 glow-text">{party.name}</h1>
                   <p className="text-muted-foreground">{party.city}, {party.country} · {party.dates}</p>
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
               { icon: Wifi, label: "Internet", value: party.internetSpeed },
               { icon: Globe, label: "Website", value: party.url.replace("https://", "") },
             ].map((item) => (
-              <div key={item.label} className="p-4 rounded-xl bg-card border border-border/50">
+              <div key={item.label} className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
                 <item.icon className="w-4 h-4 text-primary mb-1" />
                 <p className="text-xs text-muted-foreground">{item.label}</p>
                 <p className="text-sm font-medium truncate">{item.value}</p>
@@ -88,19 +88,19 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
 
           {/* Additional info */}
           <div className="grid md:grid-cols-2 gap-4 mb-10">
-            <div className="p-4 rounded-xl bg-card border border-border/50">
+            <div className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
               <p className="text-xs text-muted-foreground mb-1">Price Range</p>
               <p className="font-medium">{party.price}</p>
             </div>
-            <div className="p-4 rounded-xl bg-card border border-border/50">
+            <div className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
               <p className="text-xs text-muted-foreground mb-1">Catering</p>
               <p className="font-medium">{party.catering}</p>
             </div>
-            <div className="p-4 rounded-xl bg-card border border-border/50">
+            <div className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
               <p className="text-xs text-muted-foreground mb-1">BYOC</p>
               <p className="font-medium">{party.byoc ? "✅ Bring Your Own Computer" : "❌ Equipment Provided"}</p>
             </div>
-            <div className="p-4 rounded-xl bg-card border border-border/50">
+            <div className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
               <p className="text-xs text-muted-foreground mb-1">Games</p>
               <div className="flex flex-wrap gap-1 mt-1">
                 {party.games.map((g) => (
@@ -111,7 +111,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
           </div>
 
           {/* Ratings */}
-          <div className="rounded-xl bg-card border border-border/50 p-6 mb-10">
+          <div className="rounded-xl bg-panel border border-border/50 glow-border p-6 mb-10">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold">⭐ Ratings</h2>
               <div className="text-center">
@@ -134,7 +134,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
             <h2 className="text-xl font-bold mb-4">💬 Reviews</h2>
             <div className="space-y-4">
               {party.reviews.map((review, i) => (
-                <div key={i} className="p-4 rounded-xl bg-card border border-border/50">
+                <div key={i} className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium text-sm">{review.author}</span>
                     <Stars rating={review.rating} />
@@ -146,7 +146,7 @@ export default function EventDetailPage({ params }: { params: { slug: string } }
           </div>
 
           {/* Rate CTA */}
-          <div className="text-center p-8 rounded-xl bg-card border border-border/50">
+          <div className="text-center p-8 rounded-xl bg-panel border border-border/50 glow-border">
             <h3 className="text-lg font-bold mb-2">Been to {party.name}?</h3>
             <p className="text-muted-foreground text-sm mb-4">Share your experience and help others find the best events.</p>
             <button className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors cursor-not-allowed opacity-75">

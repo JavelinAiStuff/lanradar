@@ -82,7 +82,7 @@ export default function GuidesPage() {
 
       <div className="pt-24 pb-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold mb-4 glow-text">
             Start Your Own LAN Party <span className="text-primary">🎮</span>
           </h1>
           <p className="text-muted-foreground text-lg mb-12 max-w-2xl">
@@ -93,7 +93,7 @@ export default function GuidesPage() {
             {/* Main content */}
             <div className="flex-1 space-y-4">
               {sections.map((section, i) => (
-                <div key={i} className="rounded-xl bg-card border border-border/50 overflow-hidden">
+                <div key={i} className="rounded-xl bg-panel border border-border/50 glow-border overflow-hidden">
                   <button
                     onClick={() => toggleSection(i)}
                     className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
@@ -130,7 +130,7 @@ export default function GuidesPage() {
             {/* Sidebar */}
             <div className="lg:w-72 space-y-6">
               {/* Progress */}
-              <div className="p-5 rounded-xl bg-card border border-border/50">
+              <div className="p-5 rounded-xl bg-panel border border-border/50 glow-border">
                 <h3 className="font-semibold mb-3">📊 Your Progress</h3>
                 <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
                   <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
@@ -147,7 +147,7 @@ export default function GuidesPage() {
               <div className="space-y-4">
                 <h3 className="font-semibold">💡 Tips from the Pros</h3>
                 {tips.map((tip, i) => (
-                  <div key={i} className="p-4 rounded-xl bg-card border border-border/50">
+                  <div key={i} className="p-4 rounded-xl bg-panel border border-border/50 glow-border">
                     <Quote className="w-4 h-4 text-primary mb-2" />
                     <p className="text-sm text-muted-foreground italic mb-2">&ldquo;{tip.text}&rdquo;</p>
                     <p className="text-xs text-primary">— {tip.author}</p>
